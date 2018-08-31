@@ -1,8 +1,19 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Blogger</title>
+<title>{% block title %}{% endblock %} - Sanjiv's Python Applications</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+<!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+-->
 <nav>
-  <h1><a href="{{ url_for('index') }}">Blogger</a></h1>
+  <h1><a href="{{ url_for('index') }}">Home</a></h1>
+  {% if g.user %}
+      <h1><a href="{{ url_for('chat.chat') }}">Chat</a></h1>
+  {% endif %}
   <ul>
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span>
@@ -17,6 +28,26 @@
   <header>
     {% block header %}{% endblock %}
   </header>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var socket = io.connect('http://127.0.0.1:5000');
+      socket.on('connect', function() {
+        socket.send('User {{g.user["username"]}} is connected!');
+      });
+
+      socket.on('message', function(msg) {
+        $('#messages').prepend('<li>'+msg+'</li>');
+        console.log('Received message')
+      });
+
+      $('#sendbutton').on('click', function() {
+        socket.send('{{ g.user["username"] }}: '+  $('#myMessage').val());
+        $('#myMessage').val('');
+      });
+
+    });
+  </script>
+
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
   {% endfor %}

@@ -4,8 +4,8 @@ from flask import (
 from werkzeug.exceptions import abort
 
 from sqlalchemy import desc
-from blogs.db_alchemy import User, Post, engine
-from blogs.base import Session, engine, Base
+from blogs.db_alchemy import User, Post
+from blogs.base import Session
 
 from blogs.auth import login_required
 from blogs.db import get_db
@@ -112,3 +112,4 @@ def delete(id):
     # db.execute('DELETE FROM post WHERE id = ?', (id,))
     # db.commit()
     return redirect(url_for('blog.index'))
+

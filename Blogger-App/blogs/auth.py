@@ -1,7 +1,7 @@
 import functools
 
-from blogs.db_alchemy import User, Post, engine
-from blogs.base import Session, engine, Base
+from blogs.db_alchemy import User
+from blogs.base import Session
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
