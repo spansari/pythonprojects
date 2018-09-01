@@ -2,6 +2,26 @@
 
 {% block header %}
 <h1>{% block title %} Chat Session{% endblock %}</h1>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var socket = io.connect('http://127.0.0.1:5000');
+      socket.on('connect', function() {
+        socket.send('User {{g.user["username"]}} is connected!');
+      });
+
+      socket.on('message', function(msg) {
+        $('#messages').prepend('<li>'+msg+'</li>');
+        console.log('Received message')
+      });
+
+      $('#sendbutton').on('click', function() {
+        socket.send('{{ g.user["username"] }}: '+  $('#myMessage').val());
+        $('#myMessage').val('');
+      });
+
+    });
+  </script>
+
 {% endblock %}
 
 {% block content %}

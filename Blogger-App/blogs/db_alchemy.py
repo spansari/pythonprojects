@@ -1,11 +1,9 @@
-import os
-import sys
 from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, TEXT
+from sqlalchemy import Column, ForeignKey, Integer, DateTime, TEXT
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from flask_sqlalchemy import SQLAlchemy
 
 Base = declarative_base()
 
@@ -37,3 +35,6 @@ engine = create_engine('sqlite:///sqlalchemy_blog.db')
 
 #Base.metadata.tables["ChatHistory"].create(engine)
 Base.metadata.create_all(engine)
+print('DB Created!')
+
+db = SQLAlchemy()

@@ -1,17 +1,13 @@
 import os
 
 from flask import Flask
-from flask_socketio import SocketIO, send
-from blogs.db_alchemy import ChatHistory
-from flask_sqlalchemy import SQLAlchemy
 
 def create_app(test_config=None):
 	app = Flask(__name__, instance_relative_config=True)
 	app.config.from_mapping(
 		SECRET_KEY='dev',
-		DATABASE=os.path.join(app.instance_path, 'blogs.sqlite'),
+		SQLALCHEMY_DATABASE_URI= 'sqlite:///sqlalchemy_blog.db',
 	)
-	app.config['SECRET_KEY'] = 'mysecret'
 
 	if test_config is None:
 		app.config.from_pyfile('config.py', silent=True)
@@ -27,9 +23,6 @@ def create_app(test_config=None):
 	def hello_world():
 		return 'Hello World!'
 
-	from . import db
-	db.init_app(app)
-
 	from . import auth
 	app.register_blueprint(auth.bp)
 
@@ -40,21 +33,22 @@ def create_app(test_config=None):
 	app.register_blueprint(blog.bp)
 	app.add_url_rule('/', endpoint='index')
 
-	socketio = SocketIO(app)
+	from blogs.db_alchemy import db, ChatHistory
+	db.init_app(app)
 
-	db1 = SQLAlchemy(app)
+	from flask_socketio import SocketIO, send
+	socketio = SocketIO()
+	socketio.init_app(app)
 
 	@socketio.on('message')
 	def handleMessage(msg):
 		print('Message: '+msg)
 		message = ChatHistory(message=msg, username='default')
-		db1.session.add(message)
-		db1.session.commit()
+		db.session.add(message)
+		db.session.commit()
 		send(msg, broadcast=True)
     #
 	# if __name__ == '__main__':
 	# 	socketio.run(app)
 
 	return app
-
-
