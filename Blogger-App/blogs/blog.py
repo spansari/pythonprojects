@@ -3,7 +3,7 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-from blogs.db_alchemy import User, Post, db
+from blogs.db_model import User, Post, db
 
 from blogs.auth import login_required
 

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, Blueprint
 from blogs.auth import login_required
-from blogs.db_alchemy import ChatHistory, db
+from blogs.db_model import ChatHistory, db
 
 bp = Blueprint('chat', __name__)
 
