@@ -1,0 +1,22 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% extends "base.html" %}
+
+{% block header %}
+    <h1>Edit Blog</h1>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+
+    <div class="col-md-12">
+        {{ wtf.quick_form(form) }}
+    </div>
+
+    <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+        <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+    </form>
+
+
+{% endblock %}

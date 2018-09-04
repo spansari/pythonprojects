@@ -1,0 +1,12 @@
+Flask
+Flask-SQLAlchemy
+Flask-SocketIO
+Flask-Bootstrap
+Flask-WTF
+Flask-Nav
+Jinja2
+MarkupSafe
+WTForms
+Werkzeug
+Flask-Migrate
+

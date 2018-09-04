@@ -1,0 +1,61 @@
+{% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/utils.html' as utils %}
+{% block doc -%}
+<!DOCTYPE html>
+<html{% block html_attribs %}{% endblock html_attribs %}>
+{%- block html %}
+  <head>
+    {%- block head %}
+    <title>{% block title %}{{title|default}}{% endblock title %}</title>
+
+    {%- block metas %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%- endblock metas %}
+
+    {%- block styles %}
+        {{super()}}
+    {%- endblock styles %}
+    {%- endblock head %}
+  </head>
+  <body {% block body_attribs %}{% endblock body_attribs %}>
+    {% block body %}
+    {% block navbar %}
+        {{nav.mynavbar.render()}}
+    {% endblock navbar %}
+
+    {% block header %}{% endblock %}
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {%- if messages %}
+            <div class="row">
+                <div class="col-md-12">
+                    {{utils.flashed_messages(messages)}}
+                </div>
+            </div>
+        {%- endif %}
+    {% endwith %}
+
+    {% block content %}
+    <div class="container">
+        <div class="jumbotron">
+          <h1>Welcome to Flask-Bootstrap</h1>
+          <p>This example application demonstrates some (but not all!) of the
+          features of <a href="http://pythonhosted.org/Flask-Bootstrap">
+          Flask-Bootstrap</a>.</p>
+          <p>
+            <a class="btn btn-lg btn-default" role="button"
+               href="http://pythonhosted.org/Flask-Bootstrap" >Show docs</a>
+          </p>
+        </div>
+    </div>
+
+    {% endblock content %}
+
+    {% block scripts %}
+        {{super()}}
+    {%- endblock scripts %}
+    {% endblock body %}
+  </body>
+{%- endblock html %}
+</html>
+{% endblock doc -%}

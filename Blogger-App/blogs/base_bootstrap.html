@@ -1,0 +1,32 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}
+    <title>{% block title %}{% endblock %} - Sanjiv's Python Applications</title>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+{% endblock %}
+
+
+{% for message in get_flashed_messages() %}
+<div class="flash">{{ message }}</div>
+{% endfor %}
+
+
+{% block content %}
+ <h1><a href="{{ url_for('index') }}">Home</a></h1>
+  {% if g.user %}
+      <h1><a href="{{ url_for('chat.chat') }}">Chat</a></h1>
+  {% endif %}
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span>
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+    {% else %}
+      <li><a href="{{ url_for('auth.register') }}">Register</a>
+      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+    {% endif %}
+  </ul>
+<
+{% endblock %}
+
